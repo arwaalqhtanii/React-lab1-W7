@@ -17,7 +17,7 @@ const HomePage = () => {
     fetchCharacters(); 
   }, []);
 
-
+  
   const searchCharacters = () => {
     return characters.filter(character =>
       character.name.toLowerCase().includes(search.toLowerCase())
@@ -33,8 +33,6 @@ const HomePage = () => {
         .then(() => {
           fetchCharacters(); 
         });
-      
-        
     }
   };
 
@@ -44,7 +42,7 @@ const HomePage = () => {
       <h1 className="text-3xl font-bold text-center mb-6">Character Gallery</h1>
 
       <div className="flex justify-between items-center mb-4">
-    
+
         <input
           type="text"
           className="border rounded p-2 w-full md:w-1/1"
@@ -52,7 +50,7 @@ const HomePage = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-      
+ 
         <Link to="/add" className="btn btn-primary ml-2 mr-3">
           Add New Character
         </Link>
@@ -73,6 +71,9 @@ const HomePage = () => {
                 <h2 className="card-title">{character.name}</h2>
                 <p>Gender: {character.gender}</p>
                 <div className="card-actions justify-end">
+                  <Link to={`/update/${character.id}`} className="btn btn-primary mr-2">
+                    Update
+                  </Link>
                   <button
                     className="btn btn-primary"
                     onClick={() => handleDelete(character.id)}

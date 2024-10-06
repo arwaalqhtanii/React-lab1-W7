@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import HomePage from './assets/pages/HomePage';
 import AddCharacterPage from './assets/pages/AddCharacterPage';
+import Update from './assets/pages/Update';
 
 const router = createBrowserRouter([
   {
@@ -10,6 +11,10 @@ const router = createBrowserRouter([
   {
     path: "/add",
     element: <AddCharacterPage />,
+  },
+  {
+    path: "/update/:id",
+    element: <Update />,
   }
 ]);
 

@@ -1,25 +1,36 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-const Add = () => {
+const Update = () => {
+  const { id } = useParams();
   const [name, setName] = useState('');
   const [gender, setGender] = useState('Male');
   const [image, setImage] = useState('');
   const navigate = useNavigate();
 
+  useEffect(() => {
+  
+    axios.get(`https://66e7e6bbb17821a9d9da704c.mockapi.io/home/${id}`)
+      .then(res => {
+        const character = res.data;
+        setName(character.name);
+        setGender(character.gender);
+        setImage(character.image);
+      });
+  }, [id]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newCh = {
+    const updatedCh = {
       name,
       gender,
       image,
-      status: 'Alive', 
     };
 
-    axios.post('https://66e7e6bbb17821a9d9da704c.mockapi.io/home', newCh)
+    axios.put(`https://66e7e6bbb17821a9d9da704c.mockapi.io/home/${id}`, updatedCh)
       .then(() => {
-        navigate('/');
+        navigate('/'); 
       })
       .catch(error => console.log(error));
   };
@@ -29,13 +40,13 @@ const Add = () => {
       <div className="card bg-base-100 w-full max-w-md shadow-xl p-6">
         <figure>
           <img
-            src={image || 'https://i.pinimg.com/474x/eb/97/dd/eb97dda938837f874f981b3115ea304a.jpg'}
-            alt=""
-            className="w-full h-40 object-contain" 
+            src={image || 'https://via.placeholder.com/300x200.png?text=No+Image+Available'}
+            alt="Character Preview"
+            className="w-full h-40 object-cover"
           />
         </figure>
         <div className="card-body">
-          <h2 className="card-title text-center">Add New Character</h2>
+          <h2 className="card-title text-center">Update Character</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <input
               type="text"
@@ -43,13 +54,11 @@ const Add = () => {
               placeholder="Character Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              required
             />
             <select
               className="border p-2 w-full"
               value={gender}
               onChange={(e) => setGender(e.target.value)}
-              required
             >
               <option value="Male">Male</option>
               <option value="Female">Female</option>
@@ -57,13 +66,12 @@ const Add = () => {
             <input
               type="text"
               className="border p-2 w-full"
-              placeholder=""
+              placeholder="Image URL"
               value={image}
               onChange={(e) => setImage(e.target.value)}
-              required
             />
             <button type="submit" className="btn btn-primary w-full">
-              Add Character
+              Update Character
             </button>
           </form>
         </div>
@@ -72,5 +80,4 @@ const Add = () => {
   );
 };
 
-export default Add;
-
+export default Update;
